@@ -1,0 +1,9 @@
+<snippet>
+  <content><![CDATA[fn ${1:name}(${2:value: int}): ${3:int} {
+  ${0:return value;}
+}
+]]></content>
+  <tabTrigger>ffn</tabTrigger>
+  <scope>source.forge</scope>
+  <description>Forge function</description>
+</snippet>

@@ -1,0 +1,25 @@
+[
+  {
+    "id": "preferences",
+    "children": [
+      {
+        "id": "package-settings",
+        "children": [
+          {
+            "caption": "Forge",
+            "children": [
+              {
+                "caption": "Syntax Settings",
+                "command": "edit_settings",
+                "args": {
+                  "base_file": "${packages}/Forge/Forge.sublime-settings",
+                  "default": "{\n  \"tab_size\": 2,\n  \"translate_tabs_to_spaces\": true\n}\n"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]

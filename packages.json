@@ -1,0 +1,18 @@
+{
+  "schema_version": "4.0.0",
+  "packages": [
+    {
+      "name": "Forge",
+      "details": "https://github.com/forge-language/sublime-syntax",
+      "labels": [
+        "language syntax"
+      ],
+      "releases": [
+        {
+          "sublime_text": ">=4132",
+          "tags": true
+        }
+      ]
+    }
+  ]
+}

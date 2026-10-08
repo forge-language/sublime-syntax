@@ -1,0 +1,43 @@
+// SYNTAX TEST "Packages/Forge/Forge.sublime-syntax"
+// A comment containing if 42 "text".
+// <- comment.line.double-slash.forge
+// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ comment.line.double-slash.forge
+
+fn square(value: int): int {
+// <- keyword.declaration.forge
+// ^^^^^^ entity.name.function.forge
+//               ^^^ storage.type.forge
+  return value * value;
+//^^^^^^ keyword.control.forge
+//             ^ keyword.operator.forge
+}
+
+native main {
+// <- keyword.declaration.forge
+  let count: int = 42;
+//^^^ keyword.declaration.forge
+//           ^^^ storage.type.forge
+//                 ^^ constant.numeric.forge
+  let pi: float = 3.14;
+//                ^^^^ constant.numeric.forge
+  let whole: float = 1.;
+//                   ^^ constant.numeric.forge
+  let ready: bool = true;
+//                  ^^^^ constant.language.forge
+  let text: string = "if // still a string \n \q";
+//                   ^^^^^^^^^^^^^^^^^^^^^ string.quoted.double.forge - comment
+//                                         ^^ constant.character.escape.forge
+//                                            ^^ constant.character.escape.forge
+  let lines: string = "first
+//                    ^^^^^^ string.quoted.double.forge
+second // still string";
+// <- string.quoted.double.forge - comment
+  if (ready && count >= 1) {
+//^^ keyword.control.forge
+//          ^^ keyword.operator.forge
+//                   ^^ keyword.operator.forge
+    count += 1;
+//        ^^ keyword.operator.forge
+  }
+  return 0;
+}

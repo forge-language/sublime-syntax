@@ -1,0 +1,17 @@
+* text=auto
+*.py text eol=lf
+*.sublime-syntax text eol=lf
+*.sublime-settings text eol=lf
+*.sublime-build text eol=lf
+*.sublime-snippet text eol=lf
+*.tmPreferences text eol=lf
+*.fg text eol=lf
+*.json text eol=lf
+*.md text eol=lf
+/.github export-ignore
+/tests export-ignore
+/scripts export-ignore
+/.gitignore export-ignore
+/.gitattributes export-ignore
+/RELEASE_NOTES.md export-ignore
+/packages.json export-ignore

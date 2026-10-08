@@ -1,0 +1,10 @@
+<snippet>
+  <content><![CDATA[native main {
+  ${0:println("Hello, Forge!");}
+  return 0;
+}
+]]></content>
+  <tabTrigger>fmain</tabTrigger>
+  <scope>source.forge</scope>
+  <description>Forge native entry point</description>
+</snippet>

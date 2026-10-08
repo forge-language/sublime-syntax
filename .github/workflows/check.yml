@@ -1,0 +1,45 @@
+name: Forge syntax
+on:
+  push:
+  pull_request:
+  workflow_call:
+permissions:
+  contents: read
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m unittest discover -s tests -p 'test_*.py' -v
+      - run: python scripts/build-package.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Forge
+          path: dist/*
+  sublime:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch pinned editor used for syntax validation
+        run: |
+          curl --fail --location --retry 2 --max-time 180 https://download.sublimetext.com/sublime_text_build_4215_x64.tar.xz -o /tmp/sublime.tar.xz
+          echo 'c153f418d3ab26b90ecce8c02a82e4e961025ed7a65f7e25060a5457d43e88d9  /tmp/sublime.tar.xz' | sha256sum --check
+          tar -xf /tmp/sublime.tar.xz -C /tmp
+      - run: python3 scripts/build-package.py
+      - run: python3 scripts/test-sublime.py --sublime /tmp/sublime_text/sublime_text --result /tmp/sublime-result.json
+      - name: Ensure incorrect scopes fail in the optimized plugin host
+        run: |
+          printf 'native main {}\n// <- storage.never.forge\n' > /tmp/negative.fg
+          if python3 scripts/test-sublime.py --sublime /tmp/sublime_text/sublime_text --fixture /tmp/negative.fg --result /tmp/sublime-negative.json; then
+            echo 'Incorrect syntax scopes unexpectedly passed'
+            exit 1
+          fi
+          python3 -c 'import json; r=json.load(open("/tmp/sublime-negative.json")); assert r["errors"] and "does not match storage.never.forge" in r["errors"][0]'
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: Sublime-editor-validation
+          path: /tmp/sublime-result.json

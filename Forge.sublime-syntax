@@ -1,0 +1,67 @@
+%YAML 1.2
+---
+name: Forge
+file_extensions:
+  - fg
+scope: source.forge
+version: 2
+variables:
+  identifier: '[A-Za-z_][A-Za-z0-9_]*'
+contexts:
+  main:
+    - include: comments
+    - include: strings
+    - match: '\b(fn)\s+({{identifier}})'
+      captures:
+        1: keyword.declaration.forge
+        2: entity.name.function.forge
+    - match: '\b(struct|enum)\s+({{identifier}})'
+      captures:
+        1: keyword.declaration.forge
+        2: entity.name.type.forge
+    - match: '\b(process|coroutine|supervisor|spawn|send|recv|yield|await|if|else|while|for|break|continue|return|match|on|receive|restart)\b'
+      scope: keyword.control.forge
+    - match: '\b(let|mut|own|move|fn|const|struct|enum|native|extern|import|library|export)\b'
+      scope: keyword.declaration.forge
+    - match: '\b(int|float|bool|string|void|ptr)\b'
+      scope: storage.type.forge
+    - match: '\b(true|false)\b'
+      scope: constant.language.forge
+    # The lexer supports decimal digits and an optional dot, even without
+    # following digits. A leading minus is a separate operator token.
+    - match: '(?<![A-Za-z0-9_])[0-9]+(?:\.[0-9]*)?'
+      scope: constant.numeric.forge
+    - match: '(?:\+=|-=|\*=|/=|%=|=>|==|!=|<=|>=|&&|\|\||\|>|[+*/%!=<>-])'
+      scope: keyword.operator.forge
+    - match: '[{}]'
+      scope: punctuation.section.block.forge
+    - match: '[()]'
+      scope: punctuation.section.parens.forge
+    - match: '[\[\]]'
+      scope: punctuation.section.brackets.forge
+    - match: '[,;:.]'
+      scope: punctuation.separator.forge
+    - match: '{{identifier}}'
+      scope: variable.other.forge
+  comments:
+    - match: '//'
+      scope: punctuation.definition.comment.forge
+      push: line-comment
+  line-comment:
+    - meta_scope: comment.line.double-slash.forge
+    - match: '$'
+      pop: true
+  strings:
+    - match: '"'
+      scope: punctuation.definition.string.begin.forge
+      push: double-string
+  double-string:
+    - meta_scope: string.quoted.double.forge
+    # Unknown escapes are accepted by Forge and decode to the escaped char.
+    - match: '\\.'
+      scope: constant.character.escape.forge
+    - match: '\\$'
+      scope: constant.character.escape.forge
+    - match: '"'
+      scope: punctuation.definition.string.end.forge
+      pop: true
